@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Comparison Results</title>
+</head>
+
+<body>
+    <h1>Comparison Results</h1>
+    <p><strong>Model 1:</strong> {{ model_1_name }}</p>
+    <p><strong>Model 2:</strong> {{ model_2_name }}</p>
+    <p><strong>Selected Metric:</strong> {{ metric }}</p>
+    <p><strong>{{ model_1_name }} {{ metric }}:</strong> {{ metric_1 }}</p>
+    <p><strong>{{ model_2_name }} {{ metric }}:</strong> {{ metric_2 }}</p>
+    <!-- <table border="1">
+        <tr>
+            <th>Index</th>
+            <th>Prediction (Model 1)</th>
+            <th>Prediction (Model 2)</th>
+        </tr>
+        {% for i in predictions_1 %}
+        <tr>
+            <td>{{ forloop.counter0 }}</td>
+            <td>{{ predictions_1|slice:forloop.counter0 }}</td>
+            <td>{{ predictions_2|slice:forloop.counter0 }}</td>
+        </tr>
+        {% endfor %}
+    </table> -->
+    <a href="{% url 'compare_models' %}">Compare Again</a>
+</body>
+
+</html>
