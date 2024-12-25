@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Metrics Results</h1>
+    <div class="summary mt-4">
+        <h3 class="text-center">Model Metrics Comparison</h3>
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Metric</th>
+                    <th>{{ model_1_name }}</th>
+                    <th>{{ model_2_name }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Accuracy</td>
+                    <td>{{ metrics_1.accuracy }}</td>
+                    <td>{{ metrics_2.accuracy }}</td>
+                </tr>
+                <tr>
+                    <td>Precision</td>
+                    <td>{{ metrics_1.precision }}</td>
+                    <td>{{ metrics_2.precision }}</td>
+                </tr>
+                <tr>
+                    <td>Recall</td>
+                    <td>{{ metrics_1.recall }}</td>
+                    <td>{{ metrics_2.recall }}</td>
+                </tr>
+                <tr>
+                    <td>F1 Score</td>
+                    <td>{{ metrics_1.f1 }}</td>
+                    <td>{{ metrics_2.f1 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'metrics' %}" class="btn btn-primary">Compare Again</a>
+    </div>
+</div>
+{% endblock body %}

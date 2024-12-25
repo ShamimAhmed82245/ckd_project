@@ -4,7 +4,9 @@ class ModelComparisonForm(forms.Form):
     MODEL_CHOICES = [
         ('KN_model', 'K-Nearest Neighbors'),
         ('LR_model', 'Logistic Regression'),
-        ('DT_model', 'Decision Tree'),  # Added Decision Tree model
+        ('DT_model', 'Decision Tree'),
+        ('RF_model', 'Random Forest'),  # Added Random Forest model
+        ('SVM_model', 'Support Vector Machine'),  # Added Support Vector Machine model
     ]
     METRIC_CHOICES = [
         ('accuracy', 'Accuracy'),

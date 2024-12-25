@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Metric Pie Chart</h1>
+    <div class="summary mt-4">
+        <p><strong>Model 1:</strong> {{ model_1_name }}</p>
+        <p><strong>Model 2:</strong> {{ model_2_name }}</p>
+        <img src="data:image/png;base64,{{ pie_chart }}" class="img-fluid" alt="Metric Pie Chart">
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'metrics' %}" class="btn btn-primary">Compare Again</a>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Classification Report</h1>
+    <div class="summary mt-4">
+        <p><strong>Model 1:</strong> {{ model_1_name }}</p>
+        <div id="report_1"></div>
+        <p><strong>Model 2:</strong> {{ model_2_name }}</p>
+        <div id="report_2"></div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'metrics' %}" class="btn btn-primary">Compare Again</a>
+    </div>
+</div>
+
+<script>
+    const report1 = JSON.parse('{{ report_1|escapejs }}');
+    const report2 = JSON.parse('{{ report_2|escapejs }}');
+
+    function renderReport(report, elementId) {
+        const element = document.getElementById(elementId);
+        const table = document.createElement('table');
+        table.classList.add('table', 'table-bordered', 'table-striped');
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const headers = ['Metric', 'Precision', 'Recall', 'F1-Score', 'Support'];
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        for (const [label, metrics] of Object.entries(report)) {
+            const row = document.createElement('tr');
+            const labelCell = document.createElement('td');
+            labelCell.textContent = label;
+            row.appendChild(labelCell);
+
+            for (const metric of ['precision', 'recall', 'f1-score', 'support']) {
+                const cell = document.createElement('td');
+                cell.textContent = metrics[metric];
+                row.appendChild(cell);
+            }
+            tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        element.appendChild(table);
+    }
+
+    renderReport(report1, 'report_1');
+    renderReport(report2, 'report_2');
+</script>
+{% endblock body %}
