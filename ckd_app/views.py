@@ -5,8 +5,9 @@ import io
 import urllib, base64
 from django.shortcuts import render, redirect
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
-from .forms import ModelComparisonForm
+from .forms import ModelComparisonForm, CKDPredictionForm
 import json
+from sklearn.preprocessing import StandardScaler
 
 def compare_models(request):
     if request.method == "POST":
@@ -339,3 +340,44 @@ def classification_report_view(request):
         return render(request, "classification_report.html", context)
     else:
         return redirect('compare')
+
+def predict_ckd(request):
+    prediction = None
+    probabilities = None
+    
+    if request.method == 'POST':
+        form = CKDPredictionForm(request.POST)
+        if form.is_valid():
+            # Get form data
+            features = [
+                form.cleaned_data[field] for field in [
+                    'age', 'bp', 'sg', 'al', 'su', 'pcc', 'ba', 'bgr',
+                    'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wc', 'rc',
+                    'htn', 'dm', 'cad', 'appet', 'pe', 'ane'
+                ]
+            ]
+            
+            # Load the scaler
+            scaler = StandardScaler()
+            features_scaled = scaler.fit_transform(np.array(features).reshape(1, -1))
+            
+            # Load the model (using best performing model - Decision Tree)
+            model = pickle.load(open('ckd_app/models/DT_model.sav', 'rb'))
+            
+            # Make prediction
+            prediction = model.predict(features_scaled)[0]
+            probabilities_raw = model.predict_proba(features_scaled)[0]
+            no_ckd_prob, ckd_prob = probabilities_raw[0], probabilities_raw[1]
+            probabilities = {
+                '0': float(no_ckd_prob * 100),  # Convert to percentage
+                '1': float(ckd_prob * 100)      # Convert to percentage
+            }
+            
+    else:
+        form = CKDPredictionForm()
+    
+    return render(request, 'predict.html', {
+        'form': form,
+        'prediction': prediction,
+        'probabilities': probabilities
+    })
