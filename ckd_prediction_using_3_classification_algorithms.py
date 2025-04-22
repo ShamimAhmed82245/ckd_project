@@ -66,6 +66,8 @@ import sklearn as sk
 import seaborn as sns
 import missingno as msn
 # import plotly.express as px
+import pickle
+from sklearn.preprocessing import StandardScaler
 
 """# **Import Data**
 
@@ -371,6 +373,11 @@ sss=StandardScaler()
 X=sss.fit_transform(X)
 
 X.shape
+
+# After fitting the scaler, save it
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+pickle.dump(scaler, open('ckd_app/models/scaler.sav', 'wb'))
 
 """# **Train Test Split**"""
 
